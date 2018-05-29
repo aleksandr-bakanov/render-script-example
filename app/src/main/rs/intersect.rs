@@ -4,10 +4,6 @@
 int *aArray;
 int aSize;
 
-void init() {
-
-}
-
 int RS_KERNEL execute(int in) {
     // Binary search
     int first = 0;
