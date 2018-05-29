@@ -35,6 +35,12 @@ fun intersectRs(aSet: Set<Int>, bSet: Set<Int>): Set<Int> {
     intersectScript.forEach_execute(bAllocation, rAllocation)
 
     rAllocation.copyTo(rArr)
+
+    /*aAllocation.destroy()
+    bAllocation.destroy()
+    rAllocation.destroy()
+    intersectScript.destroy()*/
+
     return rArr.filter { it != 0 }.toSet()
 }
 
@@ -73,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 var start = 0L
                 var end = 0L
 
-                for (step in 0 until STEPS) {
+                /*for (step in 0 until STEPS) {
                     aSet.clear()
                     bSet.clear()
                     for (i in 0 until size) {
@@ -87,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
                     totalTime += end - start
                 }
-                Log.d("MainActivity", "Kotlin = ${totalTime / STEPS} ms")
+                Log.d("MainActivity", "Kotlin = ${totalTime / STEPS} ms")*/
 
                 totalTime = 0
                 for (step in 0 until STEPS) {
