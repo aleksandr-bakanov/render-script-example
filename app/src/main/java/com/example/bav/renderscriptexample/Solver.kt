@@ -40,12 +40,15 @@ class Solver(private val context: Context,
 
     fun oddEvenSort(array: IntArray): IntArray {
         val aAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
-        val bAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
+        val dummy = Allocation.createSized(rs, Element.I32(rs), array.size)
 
         aAlloc.copyFrom(array)
 
         sortScript.invoke_initialize()
         sortScript.bind_array(aAlloc)
+        sortScript._size = array.size
+
+
 
         return IntArray(0)
     }

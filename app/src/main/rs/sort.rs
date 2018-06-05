@@ -22,5 +22,18 @@ void next_pass() {
 }
 
 int RS_KERNEL execute(int in, uint32_t x) {
+    rsDebug("x = ", x);
+    // Last element will never be processed by itself
+    if (x < size - 1) {
+        // Swaping even elements
+        if (parity == 0 && (x & 1 == 0)) {
+            if (array[x + 1] < in) {
+                array[x] = array[x + 1];
+                array[x + 1] = in;
+                swapOccurred = 1;
+            }
+        }
+    }
+    // Result is dummy
     return 0;
 }
