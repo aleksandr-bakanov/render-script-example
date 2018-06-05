@@ -7,7 +7,8 @@ import android.renderscript.RenderScript
 
 class Solver(private val context: Context,
         private val rs: RenderScript = RenderScript.create(context),
-        private val intersectScript: ScriptC_intersect = ScriptC_intersect(rs)) {
+        private val intersectScript: ScriptC_intersect = ScriptC_intersect(rs),
+        private val sortScript: ScriptC_sort = ScriptC_sort(rs)) {
 
     fun solveViaKotlin(aSet: Set<Int>, bSet: Set<Int>): Set<Int> = aSet.intersect(bSet)
 
@@ -35,6 +36,18 @@ class Solver(private val context: Context,
         rAllocation.destroy()
 
         return rArr.filter { it != 0 }.toSet()
+    }
+
+    fun oddEvenSort(array: IntArray): IntArray {
+        val aAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
+        val bAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
+
+        aAlloc.copyFrom(array)
+
+        sortScript.invoke_initialize()
+        sortScript.bind_array(aAlloc)
+
+        return IntArray(0)
     }
 
     fun batcherOddEvenMergeSort(array: IntArray): IntArray {
