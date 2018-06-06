@@ -4,6 +4,7 @@ import android.content.Context
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
+import android.util.Log
 
 class Solver(private val context: Context,
         private val rs: RenderScript = RenderScript.create(context),
@@ -42,15 +43,20 @@ class Solver(private val context: Context,
         val aAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
         val dummy = Allocation.createSized(rs, Element.I32(rs), array.size)
 
+        Log.d("sort.rs: Solver", "array = ${array.joinToString()}")
+
         aAlloc.copyFrom(array)
 
-        sortScript.invoke_initialize()
-        sortScript.bind_array(aAlloc)
+        sortScript._gScript = sortScript
+        sortScript._arr = aAlloc
+        sortScript._dummy = dummy
         sortScript._size = array.size
 
+        sortScript.invoke_start()
 
-
-        return IntArray(0)
+        val rArr = IntArray(array.size)
+        aAlloc.copyTo(rArr)
+        return rArr
     }
 
     fun batcherOddEvenMergeSort(array: IntArray): IntArray {

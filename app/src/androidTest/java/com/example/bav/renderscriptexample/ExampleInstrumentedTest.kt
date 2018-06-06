@@ -2,6 +2,7 @@ package com.example.bav.renderscriptexample
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import android.util.Log
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,5 +34,14 @@ class ExampleInstrumentedTest {
         assertTrue(rSet.contains(1))
         assertTrue(rSet.contains(5))
         assertFalse(rSet.contains(3))
+    }
+
+    @Test
+    fun oddEvenTest() {
+        val appContext = InstrumentationRegistry.getTargetContext()
+        val solver = Solver(appContext)
+        val array = intArrayOf(3, 2, 4, 5, 1)
+        val res = solver.oddEvenSort(array)
+        Log.d("sort.rs: Test", "res = ${res.joinToString()}")
     }
 }
