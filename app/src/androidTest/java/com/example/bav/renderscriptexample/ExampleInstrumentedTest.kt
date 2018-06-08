@@ -1,5 +1,6 @@
 package com.example.bav.renderscriptexample
 
+import android.os.SystemClock
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import android.util.Log
@@ -8,6 +9,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import java.util.Random
+import kotlin.system.measureTimeMillis
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -43,5 +46,113 @@ class ExampleInstrumentedTest {
         val array = intArrayOf(3, 2, 4, 5, 1)
         val res = solver.oddEvenSort(array)
         Log.d("sort.rs: Test", "res = ${res.joinToString()}")
+    }
+
+    @Test
+    fun measurementRs() {
+        val appContext = InstrumentationRegistry.getTargetContext()
+        val solver = Solver(appContext)
+        val random = Random(SystemClock.uptimeMillis())
+
+        val aSet = mutableSetOf<Int>()
+        val bSet = mutableSetOf<Int>()
+
+        val steps = 5
+        var count = 1000
+
+        for (m in 0 until 4) {
+            var totalTime = 0L
+            for (step in 0 until steps) {
+                aSet.clear()
+                bSet.clear()
+                for (i in 0 until count) {
+                    aSet.add(random.nextInt())
+                    bSet.add(random.nextInt())
+                }
+                totalTime += measureTimeMillis { solver.solveViaRenderScript(aSet, bSet) }
+            }
+            Log.d("intersect.rs     RS", "count = $count, avg = ${totalTime / steps} ms")
+            count *= 10
+        }
+    }
+
+    @Test
+    fun measurementKotlin() {
+        val appContext = InstrumentationRegistry.getTargetContext()
+        val solver = Solver(appContext)
+        val random = Random(SystemClock.uptimeMillis())
+
+        val aSet = mutableSetOf<Int>()
+        val bSet = mutableSetOf<Int>()
+
+        val steps = 5
+        var count = 1000
+
+        for (m in 0 until 4) {
+            var totalTime = 0L
+            for (step in 0 until steps) {
+                aSet.clear()
+                bSet.clear()
+                for (i in 0 until count) {
+                    aSet.add(random.nextInt())
+                    bSet.add(random.nextInt())
+                }
+                totalTime += measureTimeMillis { solver.solveViaKotlin(aSet, bSet) }
+            }
+            Log.d("intersect.rs Kotlin", "count = $count, avg = ${totalTime / steps} ms")
+
+            count *= 10
+        }
+    }
+
+    @Test
+    fun measurementSortKotlin() {
+        val appContext = InstrumentationRegistry.getTargetContext()
+        val solver = Solver(appContext)
+        val random = Random(SystemClock.uptimeMillis())
+
+        val aSet = mutableSetOf<Int>()
+
+        val steps = 3
+        var count = 100
+
+        for (m in 0 until 3) {
+            var totalTime = 0L
+            for (step in 0 until steps) {
+                aSet.clear()
+                for (i in 0 until count) {
+                    aSet.add(random.nextInt())
+                }
+                totalTime += measureTimeMillis { solver.sortViaKotlin(aSet.toIntArray()) }
+            }
+            Log.d("sort.rs Kotlin", "count = $count, avg = ${totalTime / steps} ms")
+
+            count *= 10
+        }
+    }
+
+    @Test
+    fun measurementSortRs() {
+        val appContext = InstrumentationRegistry.getTargetContext()
+        val solver = Solver(appContext)
+        val random = Random(SystemClock.uptimeMillis())
+
+        val aSet = mutableSetOf<Int>()
+
+        val steps = 3
+        var count = 100
+
+        for (m in 0 until 3) {
+            var totalTime = 0L
+            for (step in 0 until steps) {
+                aSet.clear()
+                for (i in 0 until count) {
+                    aSet.add(random.nextInt())
+                }
+                totalTime += measureTimeMillis { solver.oddEvenSort(aSet.toIntArray()) }
+            }
+            Log.d("sort.rs     RS", "count = $count, avg = ${totalTime / steps} ms")
+            count *= 10
+        }
     }
 }

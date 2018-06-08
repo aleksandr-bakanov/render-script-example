@@ -4,7 +4,6 @@ import android.content.Context
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
-import android.util.Log
 
 class Solver(private val context: Context,
         private val rs: RenderScript = RenderScript.create(context),
@@ -12,6 +11,8 @@ class Solver(private val context: Context,
         private val sortScript: ScriptC_sort = ScriptC_sort(rs)) {
 
     fun solveViaKotlin(aSet: Set<Int>, bSet: Set<Int>): Set<Int> = aSet.intersect(bSet)
+
+    fun sortViaKotlin(arr: IntArray): IntArray = arr.sortedArray()
 
     fun solveViaRenderScript(aSet: Set<Int>, bSet: Set<Int>): Set<Int> {
         val aArr = aSet.toIntArray().sortedArray()
@@ -42,8 +43,6 @@ class Solver(private val context: Context,
     fun oddEvenSort(array: IntArray): IntArray {
         val aAlloc = Allocation.createSized(rs, Element.I32(rs), array.size)
         val dummy = Allocation.createSized(rs, Element.I32(rs), array.size)
-
-        Log.d("sort.rs: Solver", "array = ${array.joinToString()}")
 
         aAlloc.copyFrom(array)
 
