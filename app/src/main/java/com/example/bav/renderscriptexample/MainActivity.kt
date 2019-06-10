@@ -1,11 +1,13 @@
 package com.example.bav.renderscriptexample
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,14 +22,14 @@ class MainActivity : AppCompatActivity() {
 
         kotlin.setOnClickListener {
             val size = editText.text.toString().toInt()
-            launch {
+            GlobalScope.launch(Dispatchers.IO) {
                 runCalc(size, true)
             }
         }
 
         renderscript.setOnClickListener {
             val size = editText.text.toString().toInt()
-            launch {
+            GlobalScope.launch(Dispatchers.IO) {
                runCalc(size, false)
             }
         }
@@ -37,14 +39,14 @@ class MainActivity : AppCompatActivity() {
         val aSet = mutableSetOf<Int>()
         val bSet = mutableSetOf<Int>()
 
-        val STEPS = 5
+        val steps = 5
         val random = Random(android.os.SystemClock.uptimeMillis())
 
         var totalTime = 0L
         var start = 0L
         var end = 0L
 
-        for (step in 0 until STEPS) {
+        for (step in 0 until steps) {
             aSet.clear()
             bSet.clear()
             for (i in 0 until size) {
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
             totalTime += end - start
         }
-        val msg = "${if (isViaKotlin) "Kotlin" else "RS"} = ${totalTime / STEPS} ms"
+        val msg = "${if (isViaKotlin) "Kotlin" else "RS"} = ${totalTime / steps} ms"
         Log.d("MainActivity", msg)
         runOnUiThread { Toast.makeText(this, msg, Toast.LENGTH_LONG).show() }
     }

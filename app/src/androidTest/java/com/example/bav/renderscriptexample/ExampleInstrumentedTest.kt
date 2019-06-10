@@ -1,8 +1,8 @@
 package com.example.bav.renderscriptexample
 
 import android.os.SystemClock
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import android.util.Log
 
 import org.junit.Test

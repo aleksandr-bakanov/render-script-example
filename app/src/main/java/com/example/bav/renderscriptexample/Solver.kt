@@ -17,7 +17,7 @@ class Solver(private val context: Context,
     fun solveViaRenderScript(aSet: Set<Int>, bSet: Set<Int>): Set<Int> {
         val aArr = aSet.toIntArray().sortedArray()
         val bArr = bSet.toIntArray()
-        val rArr = IntArray(bArr.size, {0})
+        val rArr = IntArray(bArr.size){0}
 
         val aAllocation = Allocation.createSized(rs, Element.I32(rs), aArr.size)
         val bAllocation = Allocation.createSized(rs, Element.I32(rs), bArr.size)
